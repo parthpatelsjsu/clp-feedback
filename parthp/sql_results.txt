@@ -1,0 +1,160 @@
+mysql> select a.id, a.measure,  count(s.id)  from assignments a left join submissions s on a.id = s.assignment_id where a.measure in ("F1", "NMI") and description IS NOT NULL group by a.id order by count(s.id) desc;
++----+---------+-------------+
+| id | measure | count(s.id) |
++----+---------+-------------+
+| 57 | NMI     |         608 |
+| 47 | F1      |         598 | * chosen
+| 37 | F1      |         522 |
+| 39 | NMI     |         514 |
+| 53 | F1      |         499 |
+| 40 | NMI     |         455 | * chosen
+| 59 | F1      |         436 |
+| 51 | NMI     |         427 |
+| 46 | NMI     |         403 |
+| 61 | NMI     |         388 |
+| 36 | F1      |         374 |
+| 38 | F1      |         364 |
+| 35 | NMI     |         351 |
+| 62 | F1      |         325 |
+| 55 | NMI     |         295 |
+| 45 | NMI     |         257 |
+| 56 | F1      |         253 |
+| 58 | NMI     |         248 |
+| 60 | F1      |         178 |
++----+---------+-------------+
+19 rows in set (0.01 sec)
+
+| id | class_id | measure | id   | code | number | section | semester  | dir | description                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
++----+----------+---------+------+------+--------+---------+-----------+-----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| 40 |       26 | NMI     |   26 | CMPE |    255 |       2 | Fall 2021 | pr1 | For the purposes of this assignment, you will implement the bisecting k-Means clustering algorithm. You may not use libraries for this portion of your assignment. Additionally, you will gain experience with internal cluster evaluation metrics. For evaluation purposes (leaderboard ranking),we will use an external index metric (Normalized Mutual Information) for evaluating clustering solutions.                                                                |
+| 47 |       29 | F1      |   29 | CMPE |    255 |       2 | Fall 2022 | hw2 | In this assignment, you will analyze features extracted from traffic images depicting different objects to determine their type as one of 11 classes, noted by integers 1-11: car, suv, small_truck, medium_truck, large_truck, pedestrian, bus, van, people, bicycle, and motorcycle. The object classes are heavily imbalanced. For example, the training data contains 10375 cars but only 3 bicycles and 0 people. Classes in the test data are similarly distributed. |
++----+----------+---------+------+------+--------+---------+-----------+-----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+TOP 30 TOKENS FOR ASSIGNMENT 47 (NMI SCORE)
+
+mysql> select assignment_id, token_text, support, mean_gain, composite_score from motif_stats where assignment_id = 47 order by composite_score desc limit 30;
++---------------+-------------------------------------------+---------+----------------------+-----------------+
+| assignment_id | token_text                                | support | mean_gain            | composite_score |
++---------------+-------------------------------------------+---------+----------------------+-----------------+
+|            47 | HP:SelectKBest:k                          |      13 |  0.12576470868275613 |          0.5923 |
+|            47 | CALL:selectkbest                          |      13 |  0.12576470868275613 |          0.5923 |
+|            47 | IMPORT:SelectKBest                        |      12 |  0.13449211567869188 |          0.5602 |
+|            47 | IMPORT:plot_importance                    |       1 |   0.6816140065622616 |          0.5385 |
+|            47 | CALL:minmaxscaler                         |       1 |   0.6623621983595159 |          0.5243 |
+|            47 | IMPORT:MinMaxScaler                       |       1 |   0.6623621983595159 |          0.5243 |
+|            47 | CALL:len                                  |       9 |  0.22553207836958128 |          0.5116 |
+|            47 | HP:RandomForestClassifier:n_estimators    |      12 |  0.06098399244999106 |          0.5063 |
+|            47 | HP:to_csv:index                           |       1 |   0.6247354883108748 |          0.4967 |
+|            47 | HP:concatenate:axis                       |       1 |   0.6247354883108748 |          0.4967 |
+|            47 | HP:read_csv:dtype                         |       1 |   0.6247354883108748 |          0.4967 |
+|            47 | HP:read_csv:delimiter                     |       1 |   0.6247354883108748 |          0.4967 |
+|            47 | HP:to_csv:header                          |       1 |   0.6247354883108748 |          0.4967 |
+|            47 | CALL:to_csv                               |       1 |   0.6247354883108748 |          0.4967 |
+|            47 | CALL:concatenate                          |       1 |   0.6247354883108748 |          0.4967 |
+|            47 | CALL:randomforestclassifier               |      12 | 0.047111754264519315 |          0.4961 |
+|            47 | CALL:fit_transform                        |       9 |  0.17621778166617624 |          0.4754 |
+|            47 | IMPORT:chi2                               |      10 |  0.11182172061822769 |          0.4666 |
+|            47 | HP:fit:class_weight                       |       1 |   0.5644102489293576 |          0.4525 |
+|            47 | HP:ExtraTreesClassifier:random_state      |       9 |  0.12114255727406698 |           0.435 |
+|            47 | IMPORT:ExtraTreesClassifier               |       9 |  0.12114255727406698 |           0.435 |
+|            47 | HP:ExtraTreesClassifier:n_estimators      |       9 |  0.12114255727406698 |           0.435 |
+|            47 | CALL:extratreesclassifier                 |       9 |  0.12114255727406698 |           0.435 |
+|            47 | HP:RandomForestClassifier:class_weight    |      10 |  0.06653987132127621 |          0.4334 |
+|            47 | CALL:append                               |       9 |  0.09252677320231777 |           0.414 |
+|            47 | IMPORT:RandomForestClassifier             |       9 |   0.0844364931289823 |          0.4081 |
+|            47 | HP:ExtraTreesClassifier:min_samples_split |       8 |    0.133886475956323 |          0.4059 |
+|            47 | CALL:standardscaler                       |       8 |  0.12136667515045385 |          0.3967 |
+|            47 | CALL:mean                                 |       2 |  0.41926757788640767 |          0.3845 |
+|            47 | CALL:sort                                 |       2 |  0.41806327930326964 |          0.3836 |
++---------------+-------------------------------------------+---------+----------------------+-----------------+
+
+
+TOP 30 TOKENS FOR ASSIGNMENT 40 (F1 SCORE)
+mysql> select assignment_id, token_text, support, mean_gain, composite_score from motif_stats where assignment_id = 40 order by composite_score desc limit 30;
++---------------+------------------------------+---------+---------------------+-----------------+
+| assignment_id | token_text                   | support | mean_gain           | composite_score |
++---------------+------------------------------+---------+---------------------+-----------------+
+|            40 | CALL:tfidftransformer        |      13 | 0.10836865336657005 |          0.5974 |
+|            40 | CALL:csr_idf                 |       8 |  0.2757388438002698 |          0.5555 |
+|            40 | HP:csr_idf:copy              |       8 |  0.2757388438002698 |          0.5555 |
+|            40 | CALL:log                     |       8 | 0.26056837515263936 |          0.5418 |
+|            40 | CALL:defaultdict             |       8 | 0.26056837515263936 |          0.5418 |
+|            40 | CALL:shuffle                 |       1 |  0.5564161707507319 |          0.5385 |
+|            40 | CALL:calculatesse            |       2 |  0.5000434584598196 |          0.5263 |
+|            40 | HP:csr_l2normalize:copy      |       7 | 0.27638292383295787 |          0.5176 |
+|            40 | CALL:csr_l2normalize         |       7 | 0.27638292383295787 |          0.5176 |
+|            40 | CALL:fit_transform           |       9 |  0.1870794802109168 |          0.5143 |
+|            40 | CALL:items                   |       7 | 0.26802354502453174 |          0.5101 |
+|            40 | HP:TruncatedSVD:n_components |       9 | 0.18218744077851878 |          0.5099 |
+|            40 | IMPORT:defaultdict           |       7 | 0.26612245956999747 |          0.5084 |
+|            40 | IMPORT:TfidfTransformer      |      10 | 0.12359091489546005 |          0.4957 |
+|            40 | CALL:copy                    |       5 |  0.3338914226985224 |          0.4923 |
+|            40 | CALL:sqrt                    |       5 |  0.3338914226985224 |          0.4923 |
+|            40 | HP:shuffle:random_state      |       3 |  0.4132084551382359 |          0.4867 |
+|            40 | CALL:float                   |       4 | 0.36048430400272685 |          0.4778 |
+|            40 | CALL:dot                     |       5 |  0.3173163714939447 |          0.4775 |
+|            40 | CALL:square                  |       7 | 0.22561228757162666 |           0.472 |
+|            40 | CALL:findclusters            |       3 | 0.39581072322748123 |          0.4711 |
+|            40 | CALL:recalculatecentroid     |       3 | 0.39581072322748123 |          0.4711 |
+|            40 | CALL:similarity              |       3 | 0.39581072322748123 |          0.4711 |
+|            40 | CALL:initialcentroids        |       3 | 0.39581072322748123 |          0.4711 |
+|            40 | CALL:argsort                 |       4 | 0.34199452572366523 |          0.4612 |
+|            40 | IMPORT:shuffle               |       4 |  0.3415690459703974 |          0.4608 |
+|            40 | CALL:ylabel                  |       9 | 0.12465813180473322 |          0.4582 |
+|            40 | CALL:xlabel                  |       9 | 0.12465813180473322 |          0.4582 |
+|            40 | CALL:asarray                 |       5 | 0.29119578063656765 |           0.454 |
+|            40 | CALL:truncatedsvd            |       8 | 0.16011482862235826 |          0.4516 |
++---------------+------------------------------+---------+---------------------+-----------------+
+
+Assignment 40, best submission: b2bd727d9c9c4b3c96fca46a9ce15ed6, measure=0.73, path: ./CMPE255-02-fa21/pr1/b2bd727d9c9c4b3c96fca46a9ce15ed6_attempt-5.py
+Assignment 47, best submission: f3971e2692f34db9940320700d533aee, measure=0.85, path: ./CMPE255-02-fa22/hw2/f3971e2692f34db9940320700d533aee_Image Classification.py
+
+Assignment 40 "best" tokens:
+| #  | Motif / token\_text                           |
+| -- | --------------------------------------------- |
+| 1  | **IMPORT\:SMOTE**                             |
+| 2  | **HP\:SMOTE\:k\_neighbors**                   |
+| 3  | **IMPORT\:StandardScaler**                    |
+| 4  | **CALL\:fit\_transform**                      |
+| 5  | **IMPORT\:RFE**                               |
+| 6  | **HP\:RFE\:n\_features\_to\_select**          |
+| 7  | **IMPORT\:ExtraTreesClassifier**              |
+| 8  | **HP\:ExtraTreesClassifier\:n\_estimators**   |
+| 9  | **HP\:ExtraTreesClassifier\:class\_weight**   |
+| 10 | **IMPORT\:LogisticRegression**                |
+| 11 | **HP\:LogisticRegression\:penalty**           |
+| 12 | **CALL\:train\_test\_split**                  |
+| 13 | **CALL\:cross\_val\_score**                   |
+| 14 | **IMPORT\:GridSearchCV**                      |
+| 15 | **CALL\:GridSearchCV**                        |
+| 16 | **IMPORT\:confusion\_matrix**                 |
+| 17 | **IMPORT\:classification\_report**            |
+| 18 | **IMPORT\:RandomForestClassifier**            |
+| 19 | **HP\:RandomForestClassifier\:class\_weight** |
+| 20 | **IMPORT\:GradientBoostingClassifier**        |
+
+
+Assignment 47 "best" tokens:
+| #  | token\_text                                 |
+| -- | ------------------------------------------- |
+| 1  | **IMPORT\:TfidfTransformer**                |
+| 2  | **HP\:TfidfTransformer\:norm**              |
+| 3  | **IMPORT\:TruncatedSVD**                    |
+| 4  | **HP\:TruncatedSVD\:n\_components**         |
+| 5  | **HP\:TruncatedSVD\:random\_state**         |
+| 6  | **CALL\:fit\_transform**                    |
+| 7  | **CALL\:shuffle**                           |
+| 8  | **CALL\:bisect\_kMeans**                    |
+| 9  | **CALL\:kMeans**                            |
+| 10 | **CALL\:computeSSE**                        |
+| 11 | **CALL\:computeSimilarity**                 |
+| 12 | **CALL\:splitClusters**                     |
+| 13 | **CALL\:silhouette\_score**                 |
+| 14 | **IMPORT\:normalized\_mutual\_info\_score** |
+| 15 | **CALL\:normalized\_mutual\_info\_score**   |
+| 16 | **IMPORT\:csr\_matrix**                     |
+| 17 | **CALL\:euclidean\_distances**              |
+| 18 | **IMPORT\:StandardScaler**                  |
+| 19 | **CALL\:make\_pipeline**                    |
+| 20 | **HP\:bisect\_kMeans\:k**                   |
